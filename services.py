@@ -25,7 +25,12 @@ def list_posts(session: SessionDep):
 
 def create_user(session: SessionDep, payload: UserCreate):
     """Create a user."""
-    user = User(**payload.model_dump())
+    user_data = payload.model_dump()
+    posts_data = user_data.pop("posts", [])
+
+    user = User(**user_data)
+    user.posts = [Post(**post_data) for post_data in posts_data]
+
     session.add(user)
     session.commit()
     return user

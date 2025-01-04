@@ -3,7 +3,7 @@
 from fastapi import APIRouter, HTTPException
 
 from db import SessionDep
-from schemas import PostCreate, PostFull, PostPublic, UserCreate, UserFull, UserPublic
+from schemas import PostCreate, PostPublic, UserCreate, UserFull, UserPublic
 from services import create_post, create_user, get_post, get_user, list_posts, list_users
 
 router = APIRouter()
