@@ -2,7 +2,7 @@
 
 from db import SessionDep
 from post.models import Post, PostCreate
-from user.models import User
+from user.models import User, UserUpdate
 from user.schemas import UserCreateWithPosts
 
 
@@ -46,3 +46,11 @@ def get_user(session: SessionDep, user_id: int):
 def list_users(session: SessionDep):
     """List all users."""
     return session.query(User).all()
+
+
+def update_user(sesssion: SessionDep, payload: UserUpdate, user: User):
+    """Update a user."""
+    for key, value in payload.model_dump(exclude_unset=True).items():
+        setattr(user, key, value)
+    sesssion.commit()
+    return user
