@@ -12,7 +12,7 @@ from user.schemas import UserCreateWithPosts, UserReadWithPosts
 router = APIRouter()
 
 
-@router.post("/users", response_model=UserReadWithPosts)
+@router.post("/users", response_model=UserReadWithPosts, status_code=201)
 def post_user(payload: UserCreateWithPosts, session: SessionDep):
     """Create a user."""
     return create_user(session, payload)
