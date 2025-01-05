@@ -3,26 +3,22 @@
 import pytest
 from fastapi import status
 from fastapi.testclient import TestClient
-from sqlalchemy import create_engine
+from sqlalchemy import StaticPool, create_engine
 from sqlalchemy.orm import sessionmaker
-from testcontainers.postgres import PostgresContainer
 
 from db import get_session
 from main import app
 from models import Base
 from user.models import User
 
-# Initialize the Postgres container at the module level to reuse across fixtures
-postgres_container = PostgresContainer("postgres:16")
-
 
 @pytest.fixture(scope="session")
 def engine():
     """Start and stop the Postgres container."""
-    postgres_container.start()
-    engine = create_engine(postgres_container.get_connection_url())
+    sqlite_url = "sqlite:///:memory:"
+    engine = create_engine(sqlite_url, connect_args={"check_same_thread": False}, poolclass=StaticPool)
     yield engine
-    postgres_container.stop()
+    engine.dispose()
 
 
 @pytest.fixture(scope="session")
