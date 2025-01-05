@@ -1,8 +1,8 @@
 """Services for the post module."""
 
 from db import SessionDep
-from models import Post, User
-from schemas import PostCreate, UserCreate
+from post.models import Post, PostCreate
+from user.models import User, UserCreate
 
 
 def create_post(session: SessionDep, payload: PostCreate, user_id: int):
@@ -33,6 +33,7 @@ def create_user(session: SessionDep, payload: UserCreate):
 
     session.add(user)
     session.commit()
+
     return user
 
 
