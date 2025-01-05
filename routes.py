@@ -6,19 +6,19 @@ from db import SessionDep
 from post.models import PostCreate, PostRead
 from post.schemas import PostReadWithUser
 from services import create_post, create_user, get_post, get_user, list_posts, list_users
-from user.models import UserCreate, UserRead
-from user.schemas import UserFull
+from user.models import UserRead
+from user.schemas import UserCreateWithPosts, UserReadWithPosts
 
 router = APIRouter()
 
 
-@router.post("/users", response_model=UserRead)
-def post_user(payload: UserCreate, session: SessionDep):
+@router.post("/users", response_model=UserReadWithPosts)
+def post_user(payload: UserCreateWithPosts, session: SessionDep):
     """Create a user."""
     return create_user(session, payload)
 
 
-@router.get("/users/{user_id}", response_model=UserFull)
+@router.get("/users/{user_id}", response_model=UserReadWithPosts)
 def get_user_route(user_id: int, session: SessionDep):
     """Get a user."""
     user = get_user(session, user_id)

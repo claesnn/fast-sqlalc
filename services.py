@@ -2,7 +2,8 @@
 
 from db import SessionDep
 from post.models import Post, PostCreate
-from user.models import User, UserCreate
+from user.models import User
+from user.schemas import UserCreateWithPosts
 
 
 def create_post(session: SessionDep, payload: PostCreate, user_id: int):
@@ -23,7 +24,7 @@ def list_posts(session: SessionDep):
     return session.query(Post).all()
 
 
-def create_user(session: SessionDep, payload: UserCreate):
+def create_user(session: SessionDep, payload: UserCreateWithPosts):
     """Create a user."""
     user_data = payload.model_dump()
     posts_data = user_data.pop("posts", [])
